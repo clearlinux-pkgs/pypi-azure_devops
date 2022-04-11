@@ -4,12 +4,13 @@
 #
 Name     : pypi-azure_devops
 Version  : 6.0.0b4
-Release  : 2
+Release  : 3
 URL      : https://files.pythonhosted.org/packages/6c/33/73f396eb50229e681d1dbdf461a9ebdb2320383c4ac4ed697f6af1ed5184/azure-devops-6.0.0b4.tar.gz
 Source0  : https://files.pythonhosted.org/packages/6c/33/73f396eb50229e681d1dbdf461a9ebdb2320383c4ac4ed697f6af1ed5184/azure-devops-6.0.0b4.tar.gz
 Summary  : Python wrapper around the Azure DevOps 6.x APIs
 Group    : Development/Tools
 License  : MIT
+Requires: pypi-azure_devops-license = %{version}-%{release}
 Requires: pypi-azure_devops-python = %{version}-%{release}
 Requires: pypi-azure_devops-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
@@ -17,6 +18,14 @@ BuildRequires : pypi(msrest)
 
 %description
 No detailed description available
+
+%package license
+Summary: license components for the pypi-azure_devops package.
+Group: Default
+
+%description license
+license components for the pypi-azure_devops package.
+
 
 %package python
 Summary: python components for the pypi-azure_devops package.
@@ -47,7 +56,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1639045869
+export SOURCE_DATE_EPOCH=1649715385
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -62,6 +71,8 @@ python3 setup.py build
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/pypi-azure_devops
+cp %{_builddir}/azure-devops-6.0.0b4/LICENSE.txt %{buildroot}/usr/share/package-licenses/pypi-azure_devops/1df4926d6584970d76fde7fc7b7e868270b5e225
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -69,6 +80,10 @@ echo ----[ mark ]----
 
 %files
 %defattr(-,root,root,-)
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/pypi-azure_devops/1df4926d6584970d76fde7fc7b7e868270b5e225
 
 %files python
 %defattr(-,root,root,-)
